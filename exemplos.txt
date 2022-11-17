@@ -1,0 +1,355 @@
+import { db, auth } from './firebaseConect';
+import { useState } from 'react';
+import { addDoc, collection, doc, getDocs, updateDoc } from 'firebase/firestore';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import './app.css';
+
+
+
+
+function App() {
+
+  //UseState p/ renderizaçao condicional
+  const [user, setUser] = useState(false);
+  const [userDetail, setUserDetail] = useState({});
+
+  //Autenticaçao - email e password
+  const [email, setEmail] = useState();
+  const [senha, setSenha] = useState();
+
+  // cad. aluno
+  const [idAluno, setIdAluno] = useState();
+  const [nomeAluno, setNomeAluno] = useState();
+  const [sobreNomeAluno, setSobreNomeAluno] = useState();
+  const [nomePai, setNomePai] = useState();
+  const [contatoPai, setContatoPai] = useState();
+  const [nomeMae, setNomeMae] = useState();
+  const [contatoMae, setContatoMae] = useState();
+  const [turno, setTurno] = useState();
+  const [serie, setSerie] = useState();
+  const [endereco, setEndereco] = useState();
+  const [emailContato, setEmailContato] = useState();
+
+
+  // armazena dados dos inputs
+  const [idPosts, setIdPosts] = useState();
+  const [titulo, setTitulo] = useState();
+  const [autor, setAutor] = useState();
+  //const [posts, setPosts] = useState();
+
+  // grava dados dentro do db - collection
+  async function handleAdd() {
+
+    //setDoc, quando passa os paramentros manualmente
+
+    /* await setDoc(doc(db, "posts", "123456"), {
+       titulo: titulo,
+       autor: autor
+     })
+       .then(() => {
+         console.log('Cadastrado com sucesso');
+         setTitulo('');
+         setAutor('');
+         toast.success('Cadastrado com sucesso!');
+ 
+       })
+       .catch((error) => {
+         console.log('gerou erro' + error);
+ 
+         toast.warn('Error! Algum problema no cadastro.')
+       })*/
+
+    if (titulo === '' || autor === '') {
+
+      toast.warn('Preencha seus dados');
+      return;
+
+    } else {
+
+      const addPost = collection(db, 'posts');
+      await addDoc(addPost, {
+        titulo: titulo,
+        autor: autor
+      })
+        .then(() => {
+          toast.success('Cadastrado com sucesso!');
+          setTitulo('');
+          setAutor('');
+        })
+        .catch((error) => {
+          alert(error);
+        })
+
+    }
+
+  }
+
+  //consulta db - collection
+  async function pesquisarPosts() {
+
+    const pesquisar = collection(db, "posts")
+
+    await getDocs(pesquisar)
+      .then((snapshot) => {
+
+        //Array - armazena dados db dentro do
+        let lista = [];
+        //percorre lista de dados dentro do db e armazena no array
+        snapshot.forEach((doc) => {
+
+          lista.push({
+            id: doc.id,
+            titulo: doc.data().titulo,
+            autor: doc.data().autor
+          })
+
+          //   setPosts(lista);
+        })
+
+      })
+      .catch((e) => {
+
+      })
+  }
+
+  // atualizacao de collection do db
+  async function editarPosts() {
+    const docRef = doc(db, "posts", idPosts)
+    await updateDoc(docRef, {
+      titulo: titulo,
+      autor: autor
+    })
+      .then(() => {
+        toast.success('Atualizado com sucesso')
+        setIdPosts('')
+        setAutor('')
+        setTitulo('')
+      })
+      .catch((error) => {
+        toast.warn('error')
+      })
+
+  }
+
+  //cadastrar aluno
+  async function CadastroAluno() {
+
+    const docRef = collection(db, "alunos");
+    await addDoc(docRef, {
+      nome: nomeAluno,
+      sobrenome: sobreNomeAluno,
+      mae: nomeMae,
+      contatoMae: contatoMae,
+      pai: nomePai,
+      contatoPai: contatoPai,
+      serie: serie,
+      turno: turno,
+      endereco: endereco,
+      email: emailContato,
+    })
+      .then(() => {
+        toast.success('Cadastrado com sucesso');
+
+      })
+      .catch((error) => {
+        toast.warn('Todos os campos precisam ser preenchidos.');
+        console.log(error);
+      })
+  }
+
+  //funçoes de Authentication
+  async function CadUser() {
+
+    if (email === '' || senha === '') {
+      toast.warn('campos não podem estar vazios');
+      return;
+    } else {
+
+      await createUserWithEmailAndPassword(auth, email, senha)
+        .then(() => {
+          toast.success('Usuario Cadastrado com Sucesso')
+          setEmail('');
+          setSenha('');
+        })
+        .catch((error) => {
+          toast.warn('Erro ao Cadastrar');
+        })
+    }
+
+  }
+
+  // logando user
+  async function logarUser() {
+
+    if (email === '' || senha === '') {
+      toast.warn('campos não podem estar vazios');
+      return;
+    } else {
+
+      await signInWithEmailAndPassword(auth, email, senha)
+        .then((value) => {
+          toast.success('Logado com sucesso');
+
+          setUserDetail({
+            uid: value.user.uid,
+            email: value.user.email,
+          })
+
+          setUser(true);
+
+          setEmail('');
+          setSenha('')
+        })
+        .catch((error) => {
+          toast.warn('erro ao logar')
+        })
+    }
+  }
+
+  async function sairConta() {
+    await signOut(auth)
+      .then(() => {
+        setUser(false);
+        setUserDetail({})
+        toast.success('Deslogado')
+      })
+  }
+
+  return (
+    <div>
+
+      <ToastContainer
+        position="top-left"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={true}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
+
+      <div className='container'>
+        <div className='container'>
+
+          {user && (
+            <div className='container'>
+              <h1>TDC - Cadastro de alunos</h1>
+
+              <label>Turno</label>
+              <select value={turno} onChange={(e) => setTurno(e.target.value)}>
+                <option value="">Qual o turno</option>
+                <option value="manha">Manhã</option>
+                <option value="tarde">Tarde</option>
+              </select>
+
+              <label>Série</label>
+              <select value={serie} onChange={(e) => setSerie(e.target.value)}>
+                <option value="Seeione a série">Selecione a série</option>
+                <option value="9 Ano">9 Ano</option>
+                <option value="8 Ano">8 Ano</option>
+                <option value="7 Ano">7 Ano</option>
+                <option value="6 Ano">6 Ano</option>
+                <option value="5 Ano">5 Ano</option>
+              </select>
+
+
+              <label>Nome do Aluno</label>
+              <input type="text"
+                placeholder='Digite o nome do aluno'
+                value={nomeAluno}
+                onChange={(e) => setNomeAluno(e.target.value)}
+                className='inputText'
+
+              />
+
+              <label>Sobrenome do Aluno</label>
+              <input type="text"
+                placeholder='Digite o sobrenome do aluno'
+                value={sobreNomeAluno}
+                onChange={(e) => setSobreNomeAluno(e.target.value)}
+                className='inputText'
+              />
+
+              <label>Nome da Mãe</label>
+              <input type="text"
+                placeholder='Nome e Sobrenome da Mãe'
+                value={nomeMae}
+                onChange={(e) => setNomeMae(e.target.value)}
+                className='inputText'
+              />
+              <label>Contato do Mãe</label>
+              <input type="tel"
+                placeholder='Contato do Pai'
+                value={contatoMae}
+                onChange={(e) => setContatoMae(e.target.value)}
+                className='inputText'
+              />
+              <label>Nome do Pai</label>
+              <input type="text"
+                placeholder='Nome e Sobrenome do Pai'
+                value={nomePai}
+                onChange={(e) => setNomePai(e.target.value)}
+                className='inputText'
+              />
+              <label>Contato do Pai</label>
+              <input type="tel"
+                placeholder='Contato do Pai'
+                value={contatoPai}
+                onChange={(e) => setContatoPai(e.target.value)}
+                className='inputText'
+              />
+              <label>Endereço Completo</label>
+              <textarea type="text"
+                placeholder='Digite o endereço completo'
+                value={endereco}
+                onChange={(e) => setEndereco(e.target.value)}
+                className='inputText'
+              />
+              <label>E-mail Principal para contato</label>
+              <input type="email"
+                placeholder='Digite e-mail válido'
+                value={emailContato}
+                onChange={(e) => setEmailContato(e.target.value)}
+                className='inputText'
+              />
+              <button onClick={CadastroAluno}>Cadastrar</button>
+              <button onClick={sairConta} style={{ backgroundColor: '#FE0000' }}>Sair da Conta</button>
+
+            </div>
+          )}
+
+          <label>Seu Email</label>
+          <input
+            placeholder="Seu Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="inputText" />
+
+          <label>Sua Senha</label>
+          <input
+            placeholder="Sua Senha"
+            value={senha}
+            onChange={(e) => setSenha(e.target.value)}
+            className="inputText" />
+          <div style={{flexDirection:'row', justifyContent:'space-between'}}>
+            <button onClick={CadUser} style={{width:'205px'}}> Cadastro de Usuário</button>
+            <button onClick={logarUser} style={{width:'205px'}}> Logar Usuário</button>
+          </div>
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+  );
+}
+
+export default App;
