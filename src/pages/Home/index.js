@@ -21,7 +21,7 @@ export default function Home() {
 
   return (
     <div className="home-container">
-      <img src='https://1000logos.net/wp-content/uploads/2017/03/los-angeles-lakers-logo.jpg' alt="" className="img-logo" />
+      <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Los_Angeles_Lakers_logo.svg/1280px-Los_Angeles_Lakers_logo.svg.png' alt="" className="img-logo" />
       <h1>Clube Lakers Advanced</h1>
       <span>Gerencie sua agenda de forma fácil</span>
 
