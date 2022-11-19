@@ -29,7 +29,10 @@ export default function Register() {
 
       await createUserWithEmailAndPassword(auth, email, password)
         .then(() => {
-          navigation('./', { replace:true })
+          toast.success('Cadastrado com sucesso!');
+          setEmail('');
+          setPassword('');
+          navigation('./', { replace:true });
         })
         .catch((error) => {
           console.log(error)
