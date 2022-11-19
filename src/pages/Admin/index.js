@@ -1,60 +1,37 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import { auth, db } from '../../firebaseConect';
 import { signOut } from 'firebase/auth';
 
-import { 
-  addDoc,
-  collection
-} from 'firebase/firestore'
+import { collection, addDoc } from 'firebase/firestore'
 
-import { ToastContainer, toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
 import './admin.css';
 
 export default function Admin() {
 
   const [tarefaInput, setTarefaInput] = useState();
-  const [user, setUser] = useState({})
+  const [user, setUser] = useState({});
 
-  useEffect(() => {
-    async function loadTarefas() {
-
-      const userDetail = localStorage.setItem('@userDetail');
-      setUser(JSON.parse(userDetail))
-    }
-
-    loadTarefas();
-
-  }, [])
-
-  // Cadastrar tarefa
-  async function registrarTarefa(e){
-    e.preventDefault();
-
-    if(tarefaInput === ''){
-      alert("Digite sua tarefa...")
-      return;
-    }
-
+  async function registrarTarefa(){
     await addDoc(collection(db, "tarefas"), {
-      tafefa: tarefaInput,
-      created: new Date(),
-      userUid: user?.uid
+      tarefa:tarefaInput,
+      created:new Date(),
+      userUid: user.uid
     })
     .then(() => {
-      console.log("TAREFA REGISTRADA")
+      console.log('Passei aqui');
+      alert('resgistro feito');
       setTarefaInput('')
     })
-    .catch((error) => {
-      console.log("ERRO AO REGISTRAR " + error)
+    .catch((erro) => {
+      console.log("Erro " + erro);
     })
   }
+
 
   // função logout
   async function btnLogout() {
     await signOut(auth)
-    toast.warn('saiu')
   }
 
   return (
@@ -82,18 +59,7 @@ export default function Admin() {
         <button className='btn-sair' onClick={btnLogout}>Sair</button>
       </article>
 
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
+      
     </div>
   );
 }

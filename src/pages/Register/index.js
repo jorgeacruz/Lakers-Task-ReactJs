@@ -69,13 +69,13 @@ export default function Register() {
                 <input
                     autoComplete={false}
                     type="text"
-                    placeholder="Digite seu email..."
+                    placeholder="Cadastre seu email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)} />
 
                 <input
                     type="password"
-                    placeholder="********"
+                    placeholder="Cadastre uma senha"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className="register-input" />
