@@ -6,12 +6,14 @@ import 'react-toastify/dist/ReactToastify.css';
 import { auth, db } from '../../firebaseConect'
 import { signOut } from 'firebase/auth'
 
-import { addDoc, collection, query, orderBy, where, onSnapshot, doc, deleteDoc } from 'firebase/firestore'
+import { addDoc, collection, query, orderBy, where, onSnapshot, doc, deleteDoc, updateDoc } from 'firebase/firestore'
 
 export default function Admin() {
   const [tarefaInput, setTarefaInput] = useState('')
   const [user, setUser] = useState({})
   const [tarefas, setTarefas] = useState([]);
+
+  const [edit, setEdit] = useState({});
 
   useEffect(() => {
     async function loadTarefas() {
@@ -48,7 +50,12 @@ export default function Admin() {
     e.preventDefault();
 
     if (tarefaInput === '') {
-      toast.warn('Digite sua tarefa...')
+      toast.warn('Descreva sua jogada!!')
+      return;
+    }
+
+    if (edit?.id) {
+      handleUpadateTarefa();
       return;
     }
 
@@ -58,7 +65,7 @@ export default function Admin() {
       userUid: user?.uid
     })
       .then(() => {
-        toast.success('Tarefa Registrada com Sucesso!')
+        toast.success('Booom Shakalaka!')
         setTarefaInput('')
       })
       .catch((error) => {
@@ -67,28 +74,58 @@ export default function Admin() {
 
 
   }
-// deslogando do private
+
+  // btn - atualuzar tarefa
+  async function handleUpadateTarefa() {
+    const docRef = collection(db, "tarefas", edit?.id)
+
+    await updateDoc(docRef, {
+      tarefa: tarefaInput
+    })
+    .then(() => {
+      toast.success('Jogada Atualizada! ');
+      setTarefaInput('');
+      setEdit({});
+    })
+    .catch((error) => {
+      console.log(error);
+      setTarefaInput('');
+      setEdit({});
+    })
+  }
+
+  // deslogando do private
   async function handleLogout() {
     await signOut(auth);
   }
-// deletando a tarefa do Collection
-  async function deleteTarefa(id){
+
+  // deletando a tarefa do Collection
+  async function deleteTarefa(id) {
     const docRef = doc(db, "tarefas", id);
     await deleteDoc(docRef);
   }
-  
+
+  // funcao editar tarefa
+  function editTarefa(item) {
+    setTarefaInput(item.tarefa)
+    setEdit(item)
+  }
+
   return (
     <div className="admin-container">
-      <h1>Adicione suas tarefas Preferidas</h1>
+      <h1>Sua jogada Favorita do Lakers</h1>
 
       <form className="form" onSubmit={handleRegister}>
         <textarea
-          placeholder="Digite sua tarefa..."
+          placeholder="Descreva sua jogada favorita dos jogadores do Lakers"
           value={tarefaInput}
           onChange={(e) => setTarefaInput(e.target.value)}
         />
-
-        <button className="btn-register" type="submit">Registrar tarefa</button>
+        {Object.keys(edit).length > 0 ? (
+          <button className="btn-register" style={{ backgroundColor: '#000', color: '#fff' }} type="submit">Atualizar Tarefa</button>
+        ) : (
+          <button className="btn-register" type="submit">Registrar Tarefa</button>
+        )}
       </form>
 
       {tarefas.map((item) => (
@@ -96,7 +133,7 @@ export default function Admin() {
           <p>{item.tarefa}</p>
 
           <div>
-            <button>Editar</button>
+            <button onClick={() => editTarefa(item)}>Editar</button>
             <button onClick={() => deleteTarefa(item.id)} className="btn-delete">Concluir</button>
           </div>
         </article>
