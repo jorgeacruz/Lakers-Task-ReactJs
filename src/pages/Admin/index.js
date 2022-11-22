@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { auth, db } from '../../firebaseConect';
 import { signOut } from 'firebase/auth';
@@ -7,25 +7,43 @@ import { collection, addDoc } from 'firebase/firestore'
 
 import './admin.css';
 
+
 export default function Admin() {
 
   const [tarefaInput, setTarefaInput] = useState();
   const [user, setUser] = useState({});
 
-  async function registrarTarefa(){
-    await addDoc(collection(db, "tarefas"), {
-      tarefa:tarefaInput,
-      created:new Date(),
-      userUid: user.uid
-    })
-    .then(() => {
-      console.log('Passei aqui');
-      alert('resgistro feito');
-      setTarefaInput('')
-    })
-    .catch((erro) => {
-      console.log("Erro " + erro);
-    })
+  useEffect(() => {
+    async function loadTarefas() {
+      const userDetail = localStorage.getItem('@detailUser')
+      setUser(JSON.stringify(userDetail))
+    }
+
+    loadTarefas();
+  }, [])
+
+  async function registrarTarefa() {
+    if (tarefaInput === '') {
+
+      alert('Clicou');
+      
+    } else {
+
+      await addDoc(collection(db, "tarefas"), {
+        tarefa: tarefaInput,
+        created: new Date(),
+        userUid: user?.uid
+
+      })
+        .then(() => {
+          console.log('Tarefa Registrada');
+          setTarefaInput('')
+        })
+        .catch((error) => {
+          console.log("Erro " + error);
+        })
+    }
+
   }
 
 
@@ -59,7 +77,7 @@ export default function Admin() {
         <button className='btn-sair' onClick={btnLogout}>Sair</button>
       </article>
 
-      
+
     </div>
   );
 }

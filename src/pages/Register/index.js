@@ -32,7 +32,7 @@ export default function Register() {
           toast.success('Cadastrado com sucesso!');
           setEmail('');
           setPassword('');
-          navigation('./', { replace:true });
+          navigation('../', { replace:true });
         })
         .catch((error) => {
           console.log(error)
