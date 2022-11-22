@@ -51,6 +51,9 @@
     height: 90px;
     resize: none;
     border-radius: 4px;
+    width: 600px;
+    max-width: 100%;
+    padding: 10px;
 }
 
 .button-link {

@@ -1,88 +1,61 @@
 .admin-container{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    margin-top:100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 48px;
 }
-.form-admin {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+
+.admin-container h1{
+  margin-bottom: 28px;
 }
-.form-admin textarea {
-    border: 0;
-    margin-bottom: 12px;
-    height: 36px;
-    border-radius: 4px;
-    padding: 10px;
-    margin: 5px 0;
-    width: 600px;
-    height: 100px;
-    max-height: 100px;
-    max-width: 50%;
-    margin-bottom: 10px;
+
+.btn-register{
+  margin-bottom: 28px;
 }
-.form-admin button {
-    height: 36px;
-    border: 0;
-    border-radius: 4px;
-    background-color: #FDB927;
-    color: #000;
-    font-size: 18px;
-    width: 600px;
-    max-width: 50%;
-    margin-bottom: 40px;
+
+.list{
+  width: 90%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(18,18,18, 0.38);
+  border-radius: 4px;
+  margin-bottom: 12px;
+  justify-content: center;
+  padding: 14px 8px;
 }
-.admin-container h1 {
-    margin: 10px;
+
+.list p{
+  margin-bottom: 8px;
 }
-.list {
-    width: 600px;
-    max-width: 50%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    border-radius: 4px;
-    margin-bottom: 12px;
-    background-color:#68309c;
-    padding: 20px;
+
+.list button{
+  margin-right: 8px;
+  border:0;
+  border-radius: 4px;
+  padding: 4px;
 }
-.btn-editar {
-    padding: 3px;
-    margin: 10px 5px;
-    text-align: center;
-    width: 100px;
-    background: #FDB927;
-    border-radius: 5px;
-    border: none;
+
+.btn-delete{
+  color: #ffcc23;
+  background-color: transparent;
 }
-.btn-concluir {
-    padding: 3px;
-    margin: 10px 5px;
-    text-align: center;
-    width: 100px;
-    background: #000;
-    border-radius: 5px;
-    border: none;
-    color: #fff;
+
+.btn-logout{
+  position: absolute;
+  bottom: 6%;
+  left: 4%;
+  height: 60px;
+  width: 60px;
+  border-radius: 30px;
+  border:0;
+  font-weight: bold;
+  background-color: #fff;
+  color: #000;
+  transition: all 0.5s;
 }
-.btn-sair {
-    position:absolute;
-    bottom: 6%;
-    left: 5%;
-    border: none;
-    padding: 15px;
-    background: #fff;
-    width: 60px;
-    height: 60px;
-    border-radius: 30px;
-    transition: all 0.5s;
-}
-.btn-sair:hover {
-    background: rgb(240, 31, 31);
-    color: #fff;
+
+.btn-logout:hover{
+  background-color: rgba(219, 38, 41, 1);
+  color: #FFF;
 }
