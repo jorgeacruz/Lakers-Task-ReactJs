@@ -6,14 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { auth, db } from '../../firebaseConect'
 import { signOut } from 'firebase/auth'
 
-import {
-  addDoc,
-  collection,
-  query,
-  orderBy,
-  where,
-  onSnapshot
-} from 'firebase/firestore'
+import { addDoc, collection, query, orderBy, where, onSnapshot, doc, deleteDoc } from 'firebase/firestore'
 
 export default function Admin() {
   const [tarefaInput, setTarefaInput] = useState('')
@@ -74,11 +67,16 @@ export default function Admin() {
 
 
   }
-
+// deslogando do private
   async function handleLogout() {
     await signOut(auth);
   }
-
+// deletando a tarefa do Collection
+  async function deleteTarefa(id){
+    const docRef = doc(db, "tarefas", id);
+    await deleteDoc(docRef);
+  }
+  
   return (
     <div className="admin-container">
       <h1>Adicione suas tarefas Preferidas</h1>
@@ -93,15 +91,17 @@ export default function Admin() {
         <button className="btn-register" type="submit">Registrar tarefa</button>
       </form>
 
-      <article className="list">
-        <p>Estudar javascript</p>
+      {tarefas.map((item) => (
+        <article key={item.id} className="list">
+          <p>{item.tarefa}</p>
 
-        <div>
-          <button>Editar</button>
-          <button className="btn-delete">Concluir</button>
-        </div>
-      </article>
+          <div>
+            <button>Editar</button>
+            <button onClick={() => deleteTarefa(item.id)} className="btn-delete">Concluir</button>
+          </div>
+        </article>
 
+      ))}
 
       <button className="btn-logout" onClick={handleLogout}>Sair</button>
 
