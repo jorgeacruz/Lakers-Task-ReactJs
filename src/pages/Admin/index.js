@@ -94,7 +94,7 @@ export default function Admin() {
       </form>
 
       <article className="list">
-        <p>Estudar javascript e reactjs hoje a noite</p>
+        <p>Estudar javascript</p>
 
         <div>
           <button>Editar</button>
