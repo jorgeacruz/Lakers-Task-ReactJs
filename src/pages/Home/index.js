@@ -30,12 +30,11 @@ export default function Home() {
           navigation('./admin', { replace:true })
         })
         .catch((error) => {
-          console.log(error)
+          console.log(error);
+          toast.error('Preencha seus Dados')
         })
 
-    } else {
-      toast.warn('Preencha os campos vazios')
-    }
+    } 
   }
 
   return (

@@ -82,16 +82,16 @@ export default function Admin() {
     await updateDoc(docRef, {
       tarefa: tarefaInput
     })
-    .then(() => {
-      toast.success('Jogada Atualizada! ');
-      setTarefaInput('');
-      setEdit({});
-    })
-    .catch((error) => {
-      console.log(error);
-      setTarefaInput('');
-      setEdit({});
-    })
+      .then(() => {
+        toast.success('Jogada Atualizada! ');
+        setTarefaInput('');
+        setEdit({});
+      })
+      .catch((error) => {
+        console.log(error);
+        setTarefaInput('');
+        setEdit({});
+      })
   }
 
   // deslogando do private
@@ -113,6 +113,9 @@ export default function Admin() {
 
   return (
     <div className="admin-container">
+
+      <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Los_Angeles_Lakers_logo.svg/1280px-Los_Angeles_Lakers_logo.svg.png' alt="" className="img-logo" />
+
       <h1>Sua jogada Favorita do Lakers</h1>
 
       <form className="form" onSubmit={handleRegister}>

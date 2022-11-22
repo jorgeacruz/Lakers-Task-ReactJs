@@ -36,11 +36,10 @@ export default function Register() {
         })
         .catch((error) => {
           console.log(error)
+          toast.error('Cadastre seus dados')
         })
 
-    } else {
-      toast.warn('Preencha os campos vazios')
-    }
+    } 
   }
 
 
