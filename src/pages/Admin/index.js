@@ -116,7 +116,7 @@ export default function Admin() {
 
       <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Los_Angeles_Lakers_logo.svg/1280px-Los_Angeles_Lakers_logo.svg.png' alt="" className="img-logo" />
 
-      <h1>Sua jogada Favorita do Lakers</h1>
+      <h1>Anote as melhores jogadas na sua lista.</h1>
 
       <form className="form" onSubmit={handleRegister}>
         <textarea
@@ -127,7 +127,7 @@ export default function Admin() {
         {Object.keys(edit).length > 0 ? (
           <button className="btn-register" style={{ backgroundColor: '#000', color: '#fff' }} type="submit">Atualizar Tarefa</button>
         ) : (
-          <button className="btn-register" type="submit">Registrar Tarefa</button>
+          <button className="btn-register" type="submit">Adicionar Jogada</button>
         )}
       </form>
 
