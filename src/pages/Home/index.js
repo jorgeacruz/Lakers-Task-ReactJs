@@ -54,8 +54,8 @@ export default function Home() {
       />
 
       <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Los_Angeles_Lakers_logo.svg/1280px-Los_Angeles_Lakers_logo.svg.png' alt="" className="img-logo" />
-      <h1>Clube Lakers Advanced</h1>
-      <span>Gerencie sua agenda de forma fácil</span>
+      <h1>ToDo List - Lakers Club</h1>
+      <span>Jogadas memoraveis na sua lista.</span>
 
       <form className="form" onSubmit={handleLogin}>
 
