@@ -1,5 +1,5 @@
 # ToDo List - Lakers club
-<p>An simple task list in React Js using hooks and firebase.</p>
+<p>A To-Do List example built with ReactJS and Firebase to track the best plays of Lakers players.</p>
 
 ![view](./src/images/task-lakers.gif)
 
